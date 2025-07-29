@@ -1,0 +1,12 @@
+/Fi-Inventories-backend/node_modules
+/Fi-Inventories-backend/.env
+/Fi-Inventories-backend/package-lock.json
+/Fi-Inventories-backend/package.json
+/Fi-Inventories-backend/ca.pem
+
+/Fi-Inventories-dashboard/node_modules
+/Fi-Inventories-dashboard/.env
+/Fi-Inventories-dashboard/package-lock.json
+/Fi-Inventories-dashboard/package.json
+
+
