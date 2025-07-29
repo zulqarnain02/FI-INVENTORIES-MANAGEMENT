@@ -1,7 +1,8 @@
 # Fi-Money Inventory Management System
 
 ### ALL TEST CASES FOR THE CLASS InventoryManagementSystem PASSED
-image.png
+<img width="852" height="330" alt="image" src="https://github.com/user-attachments/assets/cffd4b5d-7e97-46d4-926b-997ec1585991" />
+
 
 
 This project is a full-stack inventory management system with a Next.js frontend and a Node.js (Express) backend.
