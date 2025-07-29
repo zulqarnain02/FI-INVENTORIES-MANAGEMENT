@@ -1,5 +1,6 @@
 const { Pool } = require("pg");
 const fs = require("fs");
+const path = require('path');
 
 const pool = new Pool({
   user: process.env.DB_USERNAME,
@@ -9,7 +10,7 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   ssl: {
     rejectUnauthorized: true,
-    ca: fs.readFileSync(process.env.CA_CERT).toString(),
+    ca: fs.readFileSync(path.join(process.cwd(), 'ca.pem'))
   },
 });
 
