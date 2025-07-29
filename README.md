@@ -1,5 +1,9 @@
 # Fi-Money Inventory Management System
 
+### ALL TEST CASES FOR THE CLASS InventoryManagementSystem PASSED
+image.png
+
+
 This project is a full-stack inventory management system with a Next.js frontend and a Node.js (Express) backend.
 
 ## Tech Stack
@@ -113,7 +117,7 @@ CA_CERT=path/to/your/ca.pem
 
 ### 3. Creating the `ca.pem` file
 
-For secure SSL connections to your PostgreSQL database, you will need a `ca.pem` file. This file is provided by your database hosting provider (e.g., Aiven, ElephantSQL).
+For secure SSL connections to your PostgreSQL database, you will need a `ca.pem` file. This file is provided by your database hosting provider (e.g., Aiven, ElephantSQL).`i used Aiven`
 
 1.  Download the `ca.pem` file from your database provider's dashboard.
 2.  Place it in a secure location within your project or on your system.

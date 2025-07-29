@@ -10,10 +10,11 @@ const registerUser = async (userData) => {
   const hashedPassword = await bcrypt.hash(password, salt);
 
   const newUser = await pool.query(
-    "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id, name, email",
+    "INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING id, username, email",
     [name, email, hashedPassword]
   );
-  return newUser.rows[0];
+  const user = newUser.rows[0];
+  return { id: user.id, name: user.username, email: user.email };
 };
 
 const loginUser = async (credentials) => {
@@ -29,8 +30,8 @@ const loginUser = async (credentials) => {
     throw new Error("Invalid credentials");
   }
 
-  const token = jwt.sign({ id: user.rows[0].id }, JWT_SECRET, { expiresIn: "1h" });
-  return { token, user: { id: user.rows[0].id, name: user.rows[0].name, email: user.rows[0].email } };
+  const token = jwt.sign({ id: user.rows[0].id }, JWT_SECRET, { expiresIn: "7d" });
+  return { token, user: { id: user.rows[0].id, name: user.rows[0].username, email: user.rows[0].email } };
 };
 
 module.exports = {

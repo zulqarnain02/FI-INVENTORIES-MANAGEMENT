@@ -1,0 +1,16 @@
+{
+  "name": "fi-money-scripts",
+  "version": "1.0.0",
+  "description": "Scripts for the Fi-Money project",
+  "main": "index.js",
+  "scripts": {
+    "setup-db": "node scripts/setup-db.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "pg": "^8.12.0"
+  }
+}
