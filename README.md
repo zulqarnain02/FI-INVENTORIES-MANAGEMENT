@@ -1,7 +1,9 @@
 # Fi-Money Inventory Management System
 
-### ALL TEST CASES FOR THE CLASS InventoryManagementSystem PASSED
+### ALL TEST CASES FOR THE InventoryManagementSystem PASSED
 <img width="852" height="330" alt="image" src="https://github.com/user-attachments/assets/cffd4b5d-7e97-46d4-926b-997ec1585991" />
+#### Note : setup for testing and script for database table creation is mentioned in scripts/README.md
+
 
 
 
