@@ -25,8 +25,17 @@ const updateProductQuantity = async (productId, quantity) => {
   return updatedProduct.rows[0];
 };
 
+const deleteProduct = async (productId) => {
+  const deletedProduct = await pool.query(
+    "DELETE FROM products WHERE id = $1 RETURNING *",
+    [productId]
+  );
+  return deletedProduct.rows[0];
+};
+
 module.exports = {
   getProducts,
   addProduct,
   updateProductQuantity,
+  deleteProduct,
 }; 

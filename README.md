@@ -26,7 +26,7 @@ This project is a full-stack inventory management system with a Next.js frontend
 ## Key Features
 
 - **User Authentication**: Secure user registration and login.
-- **Inventory Management**: Add, view, and update product quantities.
+- **Inventory Management**: Add, view, update product quantities, delete products.
 - **Product Details**: Store comprehensive product information including SKU, type, description, and images.
 - **Search Functionality**: Quickly find products by name, SKU, or type.
 - **Responsive Design**: A clean and intuitive user interface that works on all screen sizes.
@@ -57,6 +57,7 @@ All product-related endpoints require authentication.
 | GET    | `/products`            | Get all products for a user.|
 | POST   | `/products`            | Add a new product.          |
 | PUT    | `/products/:id/quantity`| Update a product's quantity.|
+| DELETE | `/products/:id`        | Delete a product.           |
 
 ## Database Schema
 

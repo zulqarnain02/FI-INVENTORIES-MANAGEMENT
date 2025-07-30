@@ -48,3 +48,18 @@ export const updateProduct = async (productId: string, quantity: number) => {
   }
   return response.json()
 }
+
+export const deleteProduct = async (productId: string) => {
+  const token = localStorage.getItem("token")
+  const response = await fetch(`${API_URL}/products/${productId}`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+  if (!response.ok) {
+    throw new Error("Failed to delete product")
+  }
+  return response.json()
+}

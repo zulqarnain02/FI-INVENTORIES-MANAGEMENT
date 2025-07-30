@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Textarea } from "@/components/ui/textarea"
-import { Package, Plus, Edit, LogOut, Search } from "lucide-react"
-import { getProducts, addProduct, updateProduct } from "@/services/productService"
+import { Package, Plus, Edit, LogOut, Search, Trash } from "lucide-react"
+import { getProducts, addProduct, updateProduct, deleteProduct } from "@/services/productService"
 import { Product } from "@/types/product"
 
 interface User {
@@ -38,7 +38,7 @@ export default function Products() {
 
   const [products, setProducts] = useState<Product[]>([])
   useEffect(() => {
-    
+
     const fetchProducts = async () => {
       const response = await getProducts()
       setProducts(response)
@@ -108,6 +108,16 @@ export default function Products() {
     )
   }
 
+  const handleDeleteProduct = async (productId: string) => {
+    try {
+      await deleteProduct(productId)
+      const updatedProducts = await getProducts()
+      setProducts(updatedProducts)
+    } catch (error) {
+      console.error("Failed to delete product:", error);
+    }
+  }
+
   const handleLogout = () => {
     localStorage.removeItem("user")
     localStorage.removeItem("token")
@@ -154,7 +164,7 @@ export default function Products() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">
-              ₹{products.reduce((sum, product) => sum + product.quantity * product.price, 0).toFixed(2)}
+                ₹{products.reduce((sum, product) => sum + product.quantity * product.price, 0).toFixed(2)}
               </div>
             </CardContent>
           </Card>
@@ -319,7 +329,7 @@ export default function Products() {
                       />
                     </TableCell>
                     <TableCell>₹{product.price}</TableCell>
-                    <TableCell>
+                    <TableCell className="flex items-center gap-2">
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button variant="outline" size="sm" onClick={() => setEditingProduct(product)}>
@@ -427,6 +437,24 @@ export default function Products() {
                               </Button>
                             </div>
                           )}
+                        </DialogContent>
+                      </Dialog>
+
+                      {/* Delete Product Dialog */}
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <Button variant="outline" size="sm" >
+                            <Trash className="h-4 w-4" />
+                          </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                          <DialogHeader>
+                            <DialogTitle>Delete Product</DialogTitle>
+                            <DialogDescription>Are you sure you want to delete this product?</DialogDescription>
+                          </DialogHeader>
+                          <Button onClick={() => handleDeleteProduct(product.id)} className="w-full">
+                            Delete Product
+                          </Button>
                         </DialogContent>
                       </Dialog>
                     </TableCell>
