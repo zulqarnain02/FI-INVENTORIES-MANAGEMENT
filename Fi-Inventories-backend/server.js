@@ -1,9 +1,10 @@
 const express = require("express");
 const dotenv = require("dotenv");
-dotenv.config();
-
-const { connectDB } = require("./config/db");
 const cors = require("cors");
+
+dotenv.config();
+const { connectDB } = require("./config/db");
+
 const authRoutes = require("./routes/auth");
 const productRoutes = require("./routes/product");
 
@@ -12,22 +13,23 @@ const port = process.env.PORT || 3000;
 
 connectDB();
 
-const allowedOrigins = ['https://fi-inventories-management-frontend.vercel.app', 'http://localhost:3000'];
+const allowedOrigins = [
+  'https://fi-inventories-management-frontend.vercel.app',
+  'http://localhost:3000',
+];
 
-const corsOptions = {
-  origin: (origin, callback) => {
+app.use(cors({
+  origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
   credentials: true,
-};
+}));
 
-app.use(cors(corsOptions));
-app.use(express.json()); 
+app.use(express.json());
 
 app.use("/", authRoutes);
 app.use("/products", productRoutes);
