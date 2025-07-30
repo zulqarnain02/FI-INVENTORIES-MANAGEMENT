@@ -29,7 +29,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json()); 
 
-app.use("/", authRoutes);
+app.use("", authRoutes);
 app.use("/products", productRoutes);
 
 app.get("/", (req, res) => {
