@@ -1,7 +1,7 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { registerUser, loginUser } from "@/services/authService";
 import {
@@ -30,6 +30,14 @@ export default function AuthPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    console.log("redirecting to products");
+    if (token) {
+      router.push("/products");
+    }
+  }, [router]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -254,4 +262,3 @@ export default function AuthPage() {
     </div>
   );
 }
-

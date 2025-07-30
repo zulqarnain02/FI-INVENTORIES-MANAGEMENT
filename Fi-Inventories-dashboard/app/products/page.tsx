@@ -49,6 +49,7 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
   const [editingProduct, setEditingProduct] = useState<Product | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [newProduct, setNewProduct] = useState({
     name: "",
     type: "",
@@ -304,17 +305,17 @@ export default function Products() {
               </TableHeader>
               <TableBody>
                 {filteredProducts.map((product) => (
-                  <TableRow key={product.id}>
+                  <TableRow key={product.id} onClick={() => setSelectedProduct(product)} className="cursor-pointer">
                     <TableCell>
                       <div className="flex items-center space-x-3">
                         <img
                           src={product.image_url || "/placeholder.svg"}
                           alt={product.name}
-                          className="w-10 h-10 rounded-md object-cover"
+                          className="w-10 h-10 rounded-md object-cover hidden sm:block"
                         />
                         <div>
                           <div className="font-medium">{product.name}</div>
-                          <div className="text-sm text-muted-foreground">{product.description}</div>
+                          <div className="text-sm text-muted-foreground hidden sm:block">{product.description}</div>
                         </div>
                       </div>
                     </TableCell>
@@ -326,17 +327,18 @@ export default function Products() {
                         value={product.quantity}
                         onChange={(e) => handleUpdateQuantity(product.id, Number.parseInt(e.target.value) || 0)}
                         className="w-20"
+                        onClick={(e) => e.stopPropagation()}
                       />
                     </TableCell>
                     <TableCell>₹{product.price}</TableCell>
                     <TableCell className="flex items-center gap-2">
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" size="sm" onClick={() => setEditingProduct(product)}>
+                          <Button variant="outline" size="sm" onClick={(e) => { e.stopPropagation(); setEditingProduct(product); }}>
                             <Edit className="h-4 w-4" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent className="max-w-md">
+                        <DialogContent className="max-w-md" onClick={(e) => e.stopPropagation()}>
                           <DialogHeader>
                             <DialogTitle>Edit Product Quantity</DialogTitle>
                             <DialogDescription>Update the product details.</DialogDescription>
@@ -443,11 +445,11 @@ export default function Products() {
                       {/* Delete Product Dialog */}
                       <Dialog>
                         <DialogTrigger asChild>
-                          <Button variant="outline" size="sm" >
+                          <Button variant="outline" size="sm" onClick={(e) => e.stopPropagation()} >
                             <Trash className="h-4 w-4" />
                           </Button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent onClick={(e) => e.stopPropagation()}>
                           <DialogHeader>
                             <DialogTitle>Delete Product</DialogTitle>
                             <DialogDescription>Are you sure you want to delete this product?</DialogDescription>
@@ -465,6 +467,41 @@ export default function Products() {
           </CardContent>
         </Card>
       </div>
+      {/* Product Detail Dialog */}
+      <Dialog open={!!selectedProduct} onOpenChange={() => setSelectedProduct(null)}>
+        <DialogContent className="max-w-lg">
+          {selectedProduct && (
+            <>
+              <DialogHeader>
+                <DialogTitle>{selectedProduct.name}</DialogTitle>
+                <DialogDescription>{selectedProduct.type}</DialogDescription>
+              </DialogHeader>
+              <div>
+                <img
+                  src={selectedProduct.image_url || "/placeholder.svg"}
+                  alt={selectedProduct.name}
+                  className="w-full h-64 object-cover rounded-md mb-4"
+                />
+                <p className="text-sm text-muted-foreground mb-4">{selectedProduct.description}</p>
+                <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <p className="font-medium">SKU</p>
+                    <p>{selectedProduct.sku}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium">Price</p>
+                    <p>₹{selectedProduct.price}</p>
+                  </div>
+                  <div>
+                    <p className="font-medium">Quantity</p>
+                    <p>{selectedProduct.quantity}</p>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
