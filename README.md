@@ -167,7 +167,7 @@ The application will be accessible at `http://localhost:3000`.
 ### demo screen shots
 <img width="1910" height="1024" alt="image" src="https://github.com/user-attachments/assets/b79a82f6-e23d-4eb7-838b-01cea25cd665" />
 <img width="1909" height="1010" alt="image" src="https://github.com/user-attachments/assets/ab310e82-303b-470c-860d-b81ae614dbaa" />
-<img width="1910" height="1024" alt="image" src="https://github.com/user-attachments/assets/cd80934e-4b21-444b-b25e-f29516ab8b1e" />
+<img width="1907" height="1011" alt="image" src="https://github.com/user-attachments/assets/a018213a-2d2f-4562-9ce3-a7f7858eadc1" />
 <img width="1898" height="905" alt="image" src="https://github.com/user-attachments/assets/0e7dfc97-d556-4c21-83eb-5d28f647a9ae" />
 <img width="1898" height="924" alt="image" src="https://github.com/user-attachments/assets/07c78211-a21a-4943-8106-3926698c6b3d" />
 <img width="1708" height="846" alt="image" src="https://github.com/user-attachments/assets/87616f12-cc38-41e4-a9dc-de59052d578a" />
