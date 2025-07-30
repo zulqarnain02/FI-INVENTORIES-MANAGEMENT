@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 connectDB();
 
 const allowedOrigins = [
+  "https://fi-inventories-management-frontend.vercel.app/",
   "https://fi-inventories-management-frontend.vercel.app",
   "http://localhost:3000",
 ];
