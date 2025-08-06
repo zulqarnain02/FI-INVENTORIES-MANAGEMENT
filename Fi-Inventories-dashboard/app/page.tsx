@@ -29,13 +29,41 @@ export default function AuthPage() {
   const [success, setSuccess] = useState("");
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [timer, setTimer] = useState(60);
+  const [isLocked, setIsLocked] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("redirecting to products");
     if (token) {
       router.push("/products");
+    }
+
+    const lock_time = localStorage.getItem("lock_time");
+    if (lock_time) {
+      const remainingTime = Math.ceil((Number(lock_time) - Date.now()) / 1000);
+      if (remainingTime > 0) {
+        setIsLocked(true);
+        setTimer(remainingTime);
+        const interval = setInterval(() => {
+          setTimer((prev) => {
+            if (prev <= 1) {
+              clearInterval(interval);
+              localStorage.removeItem("lock_time");
+              setError("Please try again now.");
+              setIsLocked(false);
+              return 0;
+            }
+            setError(
+              `Account locked. Please try again in ${prev - 1} seconds.`
+            );
+            return prev - 1;
+          });
+        }, 1000);
+      } else {
+        localStorage.removeItem("lock_time");
+        setIsLocked(false);
+      }
     }
   }, [router]);
 
@@ -52,6 +80,35 @@ export default function AuthPage() {
       setSuccess("Login successful!");
       router.push("/products");
     } catch (err: any) {
+      if (
+        err.message ===
+        "Account locked due to multiple failed attempts. Please try again later after 1 minute."
+      ) {
+        setIsLocked(true);
+        const lockTime = Date.now() + 60000;
+        localStorage.setItem("lock_time", String(lockTime));
+        const interval = setInterval(() => {
+          setTimer((prev) => {
+            if (prev === 1) {
+              clearInterval(interval);
+              localStorage.removeItem("lock_time");
+              setError("Please try again now.");
+              setIsLocked(false);
+              return 0;
+            }
+            setError(
+              `Account locked due to multiple failed attempts. Please try again in ${
+                prev - 1
+              } seconds.`
+            );
+            return prev - 1;
+          });
+        }, 1000);
+        setError(
+          `Account locked due to multiple failed attempts. Please try again in 60 seconds.`
+        );
+        return;
+      }
       setError(err.message || "Failed to login. Please check your credentials.");
     }
     finally {
@@ -149,7 +206,11 @@ export default function AuthPage() {
                     {success}
                   </div>
                 )}
-                <Button type="submit" className="w-full" disabled={loading}>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={loading || isLocked}
+                >
                   <UserPlus className="h-4 w-4 mr-2" />
                   {loading ? "Signing in..." : "Sign In"}
                 </Button>

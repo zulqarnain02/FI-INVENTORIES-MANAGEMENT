@@ -30,7 +30,7 @@ export async function loginUser(userData: any) {
     const data = await res.json();
 
     if (!res.ok) {
-        throw new Error(data.msg || "Login failed");
+        throw new Error(data.message || "Login failed");
     }
 
     return data;
