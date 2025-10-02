@@ -1,8 +1,8 @@
-const { Pool } = require("pg");
+const mysql = require("mysql2/promise");
 const fs = require("fs");
 const path = require('path');
 
-const pool = new Pool({
+const pool = mysql.createPool({
   user: process.env.DB_USERNAME,
   host: process.env.DB_HOST,
   database: process.env.DB_DATABASE,
@@ -10,16 +10,20 @@ const pool = new Pool({
   port: process.env.DB_PORT,
   ssl: {
     rejectUnauthorized: true,
-    ca: fs.readFileSync(path.join(process.cwd(), 'ca.pem'))
+    ca: fs.readFileSync(path.join(process.cwd(), 'ca.pem')).toString(),
   },
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
 const connectDB = async () => {
   try {
-    time=await pool.query("SELECT NOW()");
-    console.log("PostgreSQL connected");
+    const connection = await pool.getConnection();
+    console.log("MySQL connected");
+    connection.release();
   } catch (error) {
-    console.error("Error connecting to PostgreSQL", error);
+    console.error("Error connecting to MySQL", error);
     process.exit(1);
   }
 };

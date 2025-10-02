@@ -1,36 +1,38 @@
 const { pool } = require("../config/db");
 
 const getProducts = async (userId) => {
-  const products = await pool.query(
-    "SELECT * FROM products WHERE userid = $1",
+  const [products] = await pool.query(
+    "SELECT * FROM products WHERE userid = ?",
     [userId]
   );
-  return products.rows;
+  return products;
 };
 
 const addProduct = async (productData, userId) => {
   const { name, type, sku, image_url, description, quantity, price } = productData;
-  const newProduct = await pool.query(
-    "INSERT INTO products (name, type, sku, image_url, description, quantity, price, userid) VALUES ($1, $2, $3, $4, $5, $6, $7, $8) RETURNING *",
+  const [result] = await pool.query(
+    "INSERT INTO products (name, type, sku, image_url, description, quantity, price, userid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     [name, type, sku, image_url, description, quantity, price, userId]
   );
-  return newProduct.rows[0];
+
+  const [newProduct] = await pool.query("SELECT * FROM products WHERE id = ?", [result.insertId]);
+
+  return newProduct[0];
 };
 
 const updateProductQuantity = async (productId, quantity) => {
-  const updatedProduct = await pool.query(
-    "UPDATE products SET quantity = $1 WHERE id = $2 RETURNING *",
+  await pool.query(
+    "UPDATE products SET quantity = ? WHERE id = ?",
     [quantity, productId]
   );
-  return updatedProduct.rows[0];
+  const [updatedProduct] = await pool.query("SELECT * FROM products WHERE id = ?", [productId]);
+  return updatedProduct[0];
 };
 
 const deleteProduct = async (productId) => {
-  const deletedProduct = await pool.query(
-    "DELETE FROM products WHERE id = $1 RETURNING *",
-    [productId]
-  );
-  return deletedProduct.rows[0];
+    const [product] = await pool.query("SELECT * FROM products WHERE id = ?", [productId]);
+    await pool.query("DELETE FROM products WHERE id = ?", [productId]);
+    return product[0];
 };
 
 module.exports = {
