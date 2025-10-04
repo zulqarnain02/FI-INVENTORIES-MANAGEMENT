@@ -1,5 +1,5 @@
 import { Product } from "@/types/product"
-const API_URL = "http://localhost:5000"
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export async function getProducts() {
     const token = localStorage.getItem("token");
