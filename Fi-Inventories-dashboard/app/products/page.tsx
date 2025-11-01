@@ -41,7 +41,7 @@ export default function Products() {
 
     const fetchProducts = async () => {
       const response = await getProducts()
-      setProducts(response)
+      setProducts(response.products || [])
     }
     fetchProducts()
   }, [])
@@ -60,6 +60,7 @@ export default function Products() {
     price: 0,
   })
 
+  console.log("products", products)
   const filteredProducts = products.filter(
     (product) =>
       product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
